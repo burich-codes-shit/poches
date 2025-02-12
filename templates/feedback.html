@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+
+    {% block container %}
+    <h2 style="text-align: center;"> Feedback <br></h2>
+    <h5 style="text-align: center;"> I hope you'll have a minute to leave a comment about your expirience on my website <br><br></h5>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-8">
+              <form class="form-floating" method="post" action="/scratch/feedback">
+                <textarea class="form-control"  minlength="4" placeholder="Leave a comment here" id="floatingTextarea" name="comment" required></textarea>
+                <label for="floatingTextarea">Comment</label>
+                <button type="submit" class="btn btn-primary">Post it</button>
+              </form>
+            <br>
+        </div>
+        <div class="col">
+        </div>
+      </div>
+    </div>
+    <div class="comments container">
+        <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-8">
+        <div class="comments" style="background: #FFFAFA; height: 600px; overflow: auto;">
+        {% for comment in list_of_comments %}
+        <div class="card">
+          <div class="card-header">
+              <strong>Author: {{ comment[0] }}</strong>
+          </div>
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <p>{{ comment[1] }}</p>
+              <footer class="blockquote-footer"> posted in: {{ comment[2] }} </footer>
+            </blockquote>
+          </div>
+        </div><br><br>
+        {% endfor %}
+        <br><br><br>
+        </div>
+        </div>
+        <div class="col">
+        </div>
+        </div>
+    </div>
+    {% endblock %}
+

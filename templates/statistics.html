@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+    {% block container %}
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-6">
+          <h1>Global statistics</h1>
+            <table class="table table-bordered border-primary">
+                <tbody>
+                <tr>
+                   <td><strong> Total users </strong></td>
+                   <td><strong> {{ all_users_count }} </strong></td>
+                </tr>
+                <tr>
+                  <td><strong>User stats</strong></td>
+                  <td><strong>{{ user_info[2] }}</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Partner stats</strong></td>
+                  <td><strong>{{ user_info[3] }}</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Global time</strong></td>
+                  <td><strong>{{ total }}</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Male stats</strong></td>
+                  <td><strong>{{ male_time }}</strong></td>
+                </tr>
+                <tr>
+                   <td><strong>Female stats</strong></td>
+                   <td><strong>{{ female_time }}</strong></td>
+                </tr>
+            </table>
+
+        </div>
+        <div class="col">
+        </div>
+      </div>
+    </div>
+    {% endblock %}

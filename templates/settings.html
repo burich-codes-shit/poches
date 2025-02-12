@@ -1,0 +1,56 @@
+{% extends "index.html" %}
+    {% block container %}
+
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+
+
+    <h1> Settings </h1>
+    <br>
+    <h3> Choose partners name </h3>
+        <form class="row g-3" method="post" action="/scratch/settings">
+          <div class="col-auto">
+            <label class="visually-hidden">Пароль</label>
+            <input  class="form-control" name="partners_name" id="input_name" placeholder="Partners name">
+
+
+    <h3> Choose user sex </h3>
+<label for="exampleDataList_user" class="form-label"></label>
+<input class="form-control" name="user_sex" list="datalistOptions_user" id="exampleDataList_user" placeholder="Введите для поиска...">
+<datalist id="datalistOptions_user">
+  <option value="Male">
+  <option value="Female">
+</datalist>    <br>
+
+    <br>    <br>    <br>
+
+    <h3> Choose partner sex </h3>
+<label for="exampleDataList_partner" class="form-label"></label>
+<input class="form-control" name="partner_sex" list="datalistOptions_partner" id="exampleDataList_partner" placeholder="Введите для поиска...">
+<datalist id="datalistOptions_partner">
+  <option value="Male">
+  <option value="Female">
+</datalist>    <br>
+
+
+
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">Apply changes</button>
+          </div>
+        </form>
+    <br>
+
+
+
+    </div>
+    <div class="col-md-auto">
+    </div>
+    <div class="col col-lg-5">
+    </div>
+  </div>
+</div>
+
+    {% endblock %}

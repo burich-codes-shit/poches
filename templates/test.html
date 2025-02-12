@@ -1,0 +1,81 @@
+{% extends "index.html" %}
+    {% block container %}
+
+    <h1 id="timer">00:00:00</h1>
+
+       <button id="startBtn">Старт</button>
+       <button id="pauseBtn" disabled>Пауза</button>
+       <button id="resetBtn" disabled>Сброс</button>
+       <button id="submitButton" class="btn btn-primary btn-block" type="submit" style="text-align: center;">отправить время таймера</button>
+    <script>
+    document.getElementById("submitButton").addEventListener("click", sendTimeToServer);
+    function sendTimeToServer() {
+    const timerValue = document.getElementById("timer").textContent;
+
+    // Создание объекта для отправки данных
+    // let data = JSON.stringify({ timerValue });
+    let data = timerValue
+    console.log(data)
+    fetch('/scratch/test', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: data
+    })
+    }
+    </script>
+
+
+    <script>
+    let timer = document.getElementById('timer');
+    let startBtn = document.getElementById('startBtn');
+    let pauseBtn = document.getElementById('pauseBtn');
+    let resetBtn = document.getElementById('resetBtn');
+
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+    let interval;
+
+    function updateTime() {
+      seconds++;
+      if (seconds === 60) {
+        minutes++;
+        seconds = 0;
+      }
+      if (minutes === 60) {
+        hours++;
+        minutes = 0;
+      }
+      timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    startBtn.addEventListener('click', () => {
+      interval = setInterval(updateTime, 1000);
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      resetBtn.disabled = false;
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      clearInterval(interval);
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+    });
+
+    resetBtn.addEventListener('click', () => {
+      clearInterval(interval);
+      seconds = 0;
+      minutes = 0;
+      hours = 0;
+      timer.textContent = '00:00:00';
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      resetBtn.disabled = true;
+    });
+    </script>
+
+    {% endblock %}
+
+

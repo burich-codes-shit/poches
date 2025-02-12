@@ -1,0 +1,156 @@
+{% extends "index.html" %}
+    {% block container %}
+    {% if show_context_window_partner_input %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Alert</strong> You should add your partner's name in settings!.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-8">
+                <div class="card">
+                  <div class="card-header">
+                    <h1>Scratchy</h1>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong> 1. Choose who scratches </strong></li>
+                    <li class="list-group-item"><strong> 2. Start timer </strong></li>
+                    <li class="list-group-item"><strong> 3. Scatch! </strong></li>
+                  </ul>
+                </div>
+                <br>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+  <label class="form-check-label" for="flexRadioDefault1">
+    <h1>{{ user_info[0] }}</h1>
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+  <label class="form-check-label" for="flexRadioDefault2">
+    <h1>{{ user_info[1] }}</h1>
+  </label>
+</div>
+
+
+
+
+
+    <h1 id="timer" style="font-size: 70px;">00:00:00</h1>
+
+       <button class="btn btn-dark" id="startBtn">Старт</button>
+       <button class="btn btn-dark" id="pauseBtn" disabled>Пауза</button>
+       <button class="btn btn-dark" id="resetBtn" disabled>Сброс</button>
+       <br><br>
+       <button id="submitButton" class="btn btn-primary btn-block" type="submit" style="text-align: center;">Записать время таймера</button>
+<br><br>
+<h1> {{ user_info[0] }}  |  Total seconds: {{ user_info[2] }} </h1>
+
+<h1> {{ user_info[1] }}  |  Total seconds: {{ user_info[3] }} </h1>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Получаем элементы формы
+  const radioDefault1 = document.getElementById('flexRadioDefault1');
+  const radioDefault2 = document.getElementById('flexRadioDefault2');
+
+  let scratch_data; // объявляем переменную scratch_data в глобальной области видимости
+
+  // Добавляем обработчики событий изменения состояния
+  radioDefault1.addEventListener('change', function() {
+    if (radioDefault1.checked) {
+      scratch_data = 'user';
+    } else {
+      console.log('Первый флажок не выбран');
+    }
+  });
+
+  radioDefault2.addEventListener('change', function() {
+    if (radioDefault2.checked) {
+      scratch_data = 'partner';
+    } else {
+      console.log('Второй флажок не выбран');
+    }
+  });
+
+document.getElementById("submitButton").addEventListener("click", sendTimeToServer);
+  function sendTimeToServer() {
+    // Получаем выбранный вариант из формы
+    const partner_name = document.getElementById("flexRadioDefault1").checked ? "user" : "partner";
+    const timerValue = document.getElementById("timer").textContent;
+    // Создание объекта для отправки данных
+    let data = JSON.stringify({ partnerName: partner_name, timer: timerValue});
+    //let data = { partnerName: partner_name, timer: timerValue};
+    console.log(partner_name);
+
+    fetch('/scratch/scratchy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: data
+    })
+    window.location.reload();
+  }
+
+  //sendTimeToServer(); // Вызываем функцию отправки данных на сервер
+});
+
+</script>
+<script>
+    let timer = document.getElementById('timer');
+    let startBtn = document.getElementById('startBtn');
+    let pauseBtn = document.getElementById('pauseBtn');
+    let resetBtn = document.getElementById('resetBtn');
+
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+    let interval;
+
+    function updateTime() {
+      seconds++;
+      if (seconds === 60) {
+        minutes++;
+        seconds = 0;
+      }
+      if (minutes === 60) {
+        hours++;
+        minutes = 0;
+      }
+      timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    startBtn.addEventListener('click', () => {
+      interval = setInterval(updateTime, 1000);
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      resetBtn.disabled = false;
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      clearInterval(interval);
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+    });
+
+    resetBtn.addEventListener('click', () => {
+      clearInterval(interval);
+      seconds = 0;
+      minutes = 0;
+      hours = 0;
+      timer.textContent = '00:00:00';
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      resetBtn.disabled = true;
+    });
+    </script>
+        </div>
+        <div class="col">
+        </div>
+      </div>
+    </div>
+    {% endblock %}
